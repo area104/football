@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="th">
+<head>
+
+  <!-- <link rel="stylesheet" type="text/css" href="{% static '../static/css/style.css' %}"> -->
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+        font-family: 'Bai Jamjuree', sans-serif;
+  font-size: 20px;
+}
+    /* Add dark mode styles */
+    .dark-mode {
+      background-color: #000;
+      color: #fff;
+    }
+  </style>
+
+  
+
+  <title>Around | Multipurpose Bootstrap Template</title>
+</head>
+<body class="bg-light">
+    <div class="container">
+  <div class="dark-mode">
+    <!-- Navbar -->
+    <header class="navbar navbar-expand-lg fixed-top bg-dark">
+      <div class="container">
+        <a class="navbar-brand pe-sm-3" href="index.html">
+          <span class="text-primary flex-shrink-0 me-2">
+            <svg version="1.1" width="35" height="32" viewBox="0 0 36 33" xmlns="http://www.w3.org/2000/svg">
+              </svg>
+          </span>หน้าหลัก
+        </a>
+        <div class="form-check form-switch mode-switch order-lg-2 me-3 me-lg-4 ms-auto">
+          <input class="form-check-input" type="checkbox" id="theme-mode">
+          <label class="form-check-label" for="theme-mode">
+            <i class="ai-sun fs-lg"></i>
+          </label>
+          <label class="form-check-label" for="theme-mode">
+            <i class="ai-moon fs-lg"></i>
+          </label>
+        </div>
+        <a class="btn btn-primary btn-sm fs-sm order-lg-3 d-none d-sm-inline-flex" href="https://themes.getbootstrap.com/product/around-multipurpose-template-ui-kit/" target="_blank" rel="noopener">
+          <i class="ai-cart fs-xl me-2 ms-n1"></i>Buy now
+        </a>
+        <button class="navbar-toggler ms-sm-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <nav class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
+          <ul class="navbar-nav navbar-nav-scroll me-auto" style="--ar-scroll-height: 520px;">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle active" href="#" data-bs-toggle="dropdown" aria-expanded="false">เมนู</a>
+              <div class="dropdown-menu overflow-hidden p-0">
+                <div class="d-lg-flex">
+                  <div class="mega-dropdown-column pt-1 pt-lg-3 pb-lg-4">
+                    <ul class="list-unstyled mb-0">
+                      <li><a class="dropdown-item" href="index.html">หน้าหลัก</a></li>
+                      <li><a class="dropdown-item" href="landing-mobile-app-showcase.html">เลือกลีก</a></li>
+                    </ul>
+                  </div>
+                  <div class="mega-dropdown-column pb-2 pt-lg-3 pb-lg-4">
+                    <ul class="list-unstyled mb-0">
+                      <li><a class="dropdown-item" href="landing-web-studio.html">ผลบอล</a></li>
+                    </ul>
+                  </div>
+                  <div class="mega-dropdown-column position-relative border-start"></div>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="docs/getting-started.html">ติดต่อเรา</a>
+            </li>
+          </ul>
+          <div class="d-sm-none p-3 mt-n3">
+            <a class="btn btn-primary w-100  mb-1" href="#" target="_blank" rel="noopener">
+              <i class="ai-cart fs-xl me-2 ms-n1"></i>Buy now
+            </a>
+          </div>
+        </nav>
+      </div>
+      
+    </header>
+  </div>
+  
+  <!-- Content -->
+  <div class="container mt-5">
+    <!-- Add your content here -->
+  </div>
+<hr/>
+</div>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Dark mode switch
+    const modeSwitch = document.getElementById('theme-mode');
+    const html = document.querySelector('html');
+
+    modeSwitch.addEventListener('change', function () {
+      if (this.checked) {
+        html.classList.add('dark-mode');
+      } else {
+        html.classList.remove('dark-mode');
+      }
+    });
+  </script>
+</body>
+</html>

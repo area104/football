@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>หน้าแรก</title>
+{% endblock %}
+
+{% block content %}
+<h1>AAAAA</h1>
+<a href="./">AAA</a>
+<h1>{{a}} {{b}}</h1>
+<h1>AAA</h1>
+{% if a >= 6 %}
+<p>AAA</p>
+{% elif a >= 3 %}
+<p>BB</p>
+
+{% elif a >= 1 %}
+<p>BB</p>
+{% endif %}
+<button class="btn btn-primary">AA</button>
+{% endblock %}
