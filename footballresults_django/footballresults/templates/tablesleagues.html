@@ -1,0 +1,152 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+ผลฟุตบอล
+{% endblock %}
+
+{% block content %}
+
+<section>
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-center m-1">
+                <!-- <img src = "{% static 'images/home.png' %}" style="max-width: 95%;"/>  -->
+            </div>
+        </div>
+    </div>
+    
+    
+  </section>
+  <!-- Header Section bg-light -->
+  <header class=" text-center py-5" style="color: #333;">
+    <div class="container">
+      <h3 style="font-size: 40px; color: #343a40; font-weight: bold; line-height: 1.2;">ผลบอล {{league.name}}  ({{league.country}})</h3>
+      <!-- <p class="lead" style="font-size: 24px; color: #6c757d; font-weight: 300;">ผลบอลออนไลน์</p> -->
+    </div>
+  </header>
+<section>
+    <!-- <ul>
+    {% for league in data %}
+<li>{{league.home_name}},{{league.home_image}},
+    {{league.away_image}},{{league.away_name}}</li>
+    {% endfor %}</ul> -->
+</section>
+
+<section class="py-5" style="background-color: #f8f9fa;">
+    <div class="container">
+      <h2 class="mb-4" style="font-size: 2.5em; color: #495057;">เลือกช่วงเวลา</h2>
+      <form id="dateForm">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-10 col-md-10 col-sm-12 mb-4">
+                <div class="row d-flex justify-content-between">
+                    <div class="col-lg-4 col-md-5 col-sm-12 mb-4">
+                        <label for="startDate" class="form-label" style="font-weight: bold;">จากวันที่</label>
+                        <input type="date" class="form-control" id="startDate" placeholder="YYYY-MM-DD" required pattern="\d{4}-\d{2}-\d{2}" style="border-radius: 20px;">
+                        <div class="invalid-feedback" style="color: #dc3545;">
+                            Please choose a valid start date.
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-5 col-sm-12 mb-4">
+                        <label for="endDate" class="form-label" style="font-weight: bold;">ถึงวันที่</label>
+                        <input type="date" class="form-control" id="endDate" placeholder="YYYY-MM-DD" required pattern="\d{4}-\d{2}-\d{2}" style="border-radius: 20px;">
+                        <div class="invalid-feedback" style="color: #dc3545;">
+                            Please choose a valid end date.
+                        </div>
+                    </div>
+                    <div class="mt-auto col-lg-2 col-md-2 col-sm-12 mb-4">
+                        <button class="mt-auto btn btn-success p-3" id="date1" type="submit" style="border-radius: 20px; font-weight: bold; width: 100%;">ดูผล</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+        {% for date in data %}
+      <div class="row">
+          <div class="col">
+              <div class="table">
+                  <table class="table">
+                      <thead>
+                          <tr>
+                              <th>วันที่ {{date.0}}</th>
+                          </tr>
+                      </thead>
+                  </table>
+                  <table class="table">
+                      <thead>
+                          <tr>
+                              <th>เวลา</th>
+                              <th>ทีมเจ้าบ้าน</th>
+                              <th>ผลบอล</th>
+                              <th>ทีมเยือน</th>
+                              <th>status</th>
+                          </tr>
+                      </thead>
+                      <tbody><!-- <li>,{{league.home_image}},
+    {{league.away_image}},</li> -->
+                        {% for league in date.1 %}
+
+                          <tr>
+                              <td>{{league.time_unix}}</td>
+                              <td>{{league.home_name}}</td>
+                              <td><center><a href="/matchdetail" class="text-decoration-none text-dark">{{league.home_goal_count}} - {{league.away_goal_count}}</a></center></td>
+                              <td>{{league.away_name}}</td>
+                              <td>
+                                {% if league.status == 'complete' %}
+                                <div class="p-2 rounded bg-success text-white">{{league.status}}</div>
+                                {% else %}
+                                <div class="p-2 rounded bg-warning text-dark">{{league.status}}</div>
+                                {% endif %}
+                                </td>
+                              
+                          </tr>{% endfor %}
+                          <!-- <td><button class="btn btn-secondary">วิเคราะห์ <i class="fas fa-arrow-down"></i></button></td> -->
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+      {% endfor %}
+
+  </div>
+  </section>
+  
+  <script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+      'use strict'
+  
+      window.addEventListener('load', function () {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation')
+  
+        // Loop over them and prevent submission
+        Array.prototype.filter.call(forms, function (form) {
+          form.addEventListener('submit', function (event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault()
+              event.stopPropagation()
+            }
+  
+            form.classList.add('was-validated')
+          }, false)
+        })
+  
+        // Set minimum end date to the selected start date
+        let startDate = document.getElementById('startDate')
+        let endDate = document.getElementById('endDate')
+  
+        startDate.addEventListener('change', function() {
+          endDate.min = startDate.value
+        })
+  
+      }, false)
+    })()
+  </script>
+ 
+{% endblock %}

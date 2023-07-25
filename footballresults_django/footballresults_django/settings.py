@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'footballresults',
+    'djongo'
 ]
 
 MIDDLEWARE = [
@@ -74,12 +75,29 @@ WSGI_APPLICATION = 'footballresults_django.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'djongo',
+        'NAME': 'footballdb',
+        'ENFORCE_SCHEMA': True,
+        'CLIENT': {
+            'host': 'localhost',       # Change 'your_host' to 'localhost'
+            'port': 27017,             # Change 'your_port' to 27017
+            'username': 'admin1',           # Leave 'your_username' empty if no username required
+            'password': 'qwerty',           # Leave 'your_password' empty if no password required
+            'authSource': 'admin',
+            'authMechanism': 'SCRAM-SHA-1',
+        }
     }
 }
+
 
 
 # Password validation

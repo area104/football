@@ -1,21 +1,62 @@
-{% extends "base.html" %}
 
+{% extends "base.html" %}
+{% load static %}
 {% block title %}
-<title>หน้าแรก</title>
+หน้าแรก
 {% endblock %}
 
 {% block content %}
-<h1>AAAAA</h1>
-<a href="./">AAA</a>
-<h1>{{a}} {{b}}</h1>
-<h1>AAA</h1>
-{% if a >= 6 %}
-<p>AAA</p>
-{% elif a >= 3 %}
-<p>BB</p>
 
-{% elif a >= 1 %}
-<p>BB</p>
-{% endif %}
-<button class="btn btn-primary">AA</button>
+<section>
+    <!-- <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-center m-1">
+                <img src = "{% static 'images/home.png' %}" style="max-width: 95%;"/> 
+            </div>
+        </div>
+    </div> -->
+    
+    
+  </section>
+  <!-- Header Section bg-light -->
+  <header class=" text-center py-5" style="color: #333;">
+    <div class="container">
+      <h1 style="font-size: 60px; color: #343a40; font-weight: bold; line-height: 1.2;">เลือกลีก</h1>
+      <p class="lead" style="font-size: 24px; color: #6c757d; font-weight: 300;">ผลบอลออนไลน์</p>
+    </div>
+  </header>
+  
+  <!-- Card Section -->
+  <section class="py-5">
+    
+    <div class="container">
+      <div class="row">{% for league in data %}
+        <!-- Card 1 -->
+        <div class="col-lg-3 col-md-4 col-sm-6  mb-4"><a href="/tablesleagues/{{ league.league_id }}">
+          <div class="card h-100 shadow-sm rounded">
+            <div class="row d-flex justify-content-center py-4">
+                <div class="col-11">
+                  <!-- <img src="{% static '/images/leagues/Logo_UEFA_Champions_League.png' %}" class="card-img-top" alt="Image"> -->
+                  <img src="{% static 'images/leagues/' %}{{ league.image }}" class="card-img-top" alt="Image">
+                </div>
+            </div>
+            <div class="card-body d-flex justify-content-center">
+                <div class="row">
+                  <div class="col text-center">
+                    <h4 class="card-title h4">{{ league.name }}</h4>
+                    <p class="card-text">{{ league.country }}</p>
+                  </div>
+                </div>
+            </div>
+          </div></a>
+        </div>{% endfor %}
+      </div>
+    </div>
+    
+  </section>
+  <ul>
+    <li>AAAAAAA</li>
+  {% for user in users %}
+  <li>{{ user.home_team }} , {{ user.home_score }}</li>
+{% endfor %}</ul>
 {% endblock %}

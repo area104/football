@@ -1,0 +1,98 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+ผลฟุตบอล
+{% endblock %}
+
+{% block content %}
+<style>
+          .nav-button {
+            color: #4caf50;
+            transition: color 0.2s ease;
+        }
+        .nav-button:hover {
+            color: #388e3c;
+        }
+
+        .btn-secondary {
+            background-color: #4caf50;
+            border: none;
+            transition: background-color 0.2s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #388e3c;
+        }
+</style>
+<section>
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-center m-1">
+                <!-- <img src = "{% static 'images/home.png' %}" style="max-width: 95%;"/>  -->
+            </div>
+        </div>
+    </div>
+    
+    
+  </section>
+  <!-- Header Section bg-light -->
+  <header class=" text-center py-5" style="color: #333;">
+    <div class="container">
+      <h3 style="font-size: 40px; color: #343a40; font-weight: bold; line-height: 1.2;">ผลบอลวันนี้</h3>
+      <!-- <p class="lead" style="font-size: 24px; color: #6c757d; font-weight: 300;">ผลบอลออนไลน์</p> -->
+    </div>
+  </header>
+  <section>
+    <div class="container">
+      <nav class="d-flex justify-content-between my-4">
+          <button class="btn btn-link nav-button">
+              <i class="fas fa-chevron-left"></i> 19 ก.ค. 66
+          </button>
+          <button class="btn btn-secondary" style="background-color: #328b8b;">
+              <i class="fas fa-calendar-day"></i> วันพฤหัสบดี 20 ก.ค. 2566
+          </button>
+          <button class="btn btn-link nav-button">
+              21 ก.ค. 66 <i class="fas fa-chevron-right"></i>
+          </button>
+      </nav>
+      <div class="row">
+          <div class="col">
+              <div class="table-responsive">
+                  <table class="table">
+                      <thead>
+                          <tr>
+                              <th>ผลบอลบราซิล-เซเรีย-บี</th>
+                          </tr>
+                      </thead>
+                  </table>
+                  <table class="table">
+                      <thead>
+                          <tr>
+                              <th>เวลา</th>
+                              <th>ทีมเจ้าบ้าน</th>
+                              <th>ผลบอล</th>
+                              <th>ทีมเยือน</th>
+                              <th>วิเคราะห์บอล</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr>
+                              <td>07:30</td>
+                              <td>สปอร์ต คลับ เรซิเฟ่</td>
+                              <td><a href="/matchdetail" class="text-decoration-none text-dark">1-2</a></td>
+                              <td><div class="p-2 rounded bg-success text-white">Open</div>
+                                <div class="p-2 rounded bg-danger text-white">Closed</div>
+                                <div class="p-2 rounded bg-warning text-dark">Warning</div>
+                                
+                                </td>
+                              <td><button class="btn btn-secondary">วิเคราะห์ <i class="fas fa-arrow-down"></i></button></td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+  </div>
+  </section>
+
+{% endblock %}

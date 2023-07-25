@@ -1,0 +1,86 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+ผลฟุตบอล
+{% endblock %}
+
+{% block content %}
+<style>
+          .nav-button {
+            color: #4caf50;
+            transition: color 0.2s ease;
+        }
+        .nav-button:hover {
+            color: #388e3c;
+        }
+
+        .btn-secondary {
+            background-color: #4caf50;
+            border: none;
+            transition: background-color 0.2s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #388e3c;
+        }
+</style>
+<section>
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-center m-1">
+                <!-- <img src = "{% static 'images/home.png' %}" style="max-width: 95%;"/>  -->
+            </div>
+        </div>
+    </div>
+    
+    
+  </section>
+  <!-- Header Section bg-light -->
+  <header class=" text-center py-5" style="color: #333;">
+    <div class="container">
+      <h3 style="font-size: 40px; color: #343a40; font-weight: bold; line-height: 1.2;">ผลบอลวันนี้</h3>
+      <!-- <p class="lead" style="font-size: 24px; color: #6c757d; font-weight: 300;">ผลบอลออนไลน์</p> -->
+    </div>
+  </header>
+ 
+
+  <section class="match__livescore">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h2 class="match__result"><a href="https://football.kapook.com">ผลบอลสด</a> Live Score ผลบอล</h2>
+          <div class="d-flex align-items-center">
+            <figure class="me-3">
+              <img src="https://cdn.sportmonks.com/images/soccer/teams/18/18.png" class="img-fluid">
+              <figcaption>เชลซี</figcaption>
+            </figure>
+          </div>
+        </div>
+        <div class="col d-flex flex-column align-items-center justify-content-center">
+          <p id="18825137" class="match__status MatchST_ft"></p>
+          <div class="p-2 rounded border shadow text-center" style="font-size: 2rem;">
+              <strong class="match__score__final h1">5-0</strong>
+          </div>
+          <span class="match__text" style="display: none;">90 '</span>
+          <div class="bet_match_inside">
+            <pie class="hundreds"></pie>
+            <pie class="hundreds"></pie>
+          (2)
+          </div>
+        </div>
+        <div class="col">
+          <div class="d-flex align-items-center justify-content-end">
+            <figure class="ms-3">
+              <img src="https://cdn.sportmonks.com/images/soccer/teams/27/283.png" class="img-fluid">
+              <figcaption>เร็กซ์แฮม</figcaption>
+            </figure>
+            <div class="match__team__note">                   
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>    
+  </section>
+  
+
+{% endblock %}
