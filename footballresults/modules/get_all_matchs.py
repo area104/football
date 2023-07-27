@@ -6,7 +6,7 @@ import datetime
 from pythainlp.util import thai_strftime
 from operator import itemgetter
 from itertools import groupby
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 def convert_datetime(date1):
     # Convert the input date string to a datetime object
@@ -22,27 +22,35 @@ def get_all_matchs(league_id, date_unix_gte = "2022-08-06",date_unix_lte = "2022
     
 
     # Get today's date
-    today = datetime.now()
+    today = datetime.datetime.now()
 
     # Calculate the date 7 days ago
-    seven_days_ago = today - timedelta(days=7)
+    seven_days_ago = today - timedelta(days=7+2*365)
 
     # Format the date as "YYYY-MM-DD"
     formatted_date = seven_days_ago.strftime("%Y-%m-%d")
-
-    league = FootballLeague.objects.filter(league_id=str(league_id)).first()
+    if league_id == "0" or league_id == 0 :
+        league = {"name": "", "country":""}
+    else:
+        league = FootballLeague.objects.filter(league_id=str(league_id)).first()
     if date_unix_gte == "":
         date_unix_gte = formatted_date
     if date_unix_lte == "":
         date_unix_lte = today.strftime("%Y-%m-%d")
-    data = FootballMatch.objects.filter(date_unix__gte = date_unix_gte,
-    date_unix__lte = date_unix_lte,
-    league_id=league_id).values('status', 'match_id', 'date_unix', 'time_unix',
-    'home_goal_count','away_goal_count','winning_team','home_name','away_name',
-    "home_id","away_id","season")
-    data = list(data.values('status', 'match_id', 'date_unix', 'time_unix',
-    'home_goal_count','away_goal_count','winning_team','home_name','away_name',
-    "home_id","away_id","season"))
+    if league_id == "0" or league_id == 0 :
+        data = FootballMatch.objects.filter(date_unix__gte = date_unix_gte,
+            date_unix__lte = date_unix_lte).values('status', 'match_id', 'date_unix', 'time_unix',
+            'home_goal_count','away_goal_count','winning_team','home_name','away_name',
+            "home_id","away_id","season")
+    else:
+        data = FootballMatch.objects.filter(date_unix__gte = date_unix_gte,
+        date_unix__lte = date_unix_lte,
+        league_id=league_id).values('status', 'match_id', 'date_unix', 'time_unix',
+        'home_goal_count','away_goal_count','winning_team','home_name','away_name',
+        "home_id","away_id","season")
+        data = list(data.values('status', 'match_id', 'date_unix', 'time_unix',
+        'home_goal_count','away_goal_count','winning_team','home_name','away_name',
+        "home_id","away_id","season"))
     data1 = []
     for x in data:
         x['date_unix']=convert_datetime(x['date_unix'])
