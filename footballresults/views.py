@@ -12,6 +12,7 @@ import datetime
 from pythainlp.util import thai_strftime
 from itertools import groupby
 from operator import itemgetter
+from .modules.get_all_leagues import get_all_leagues
 
 # Create your views here.
 def index(request):
@@ -127,7 +128,7 @@ def tablesleagues(request, league_id):
     data1 = []
     for x in data:
         x['date_unix']=convert_datetime(x['date_unix'])
-        x['time_unix']=":".join(x['time_unix'].split(":")[:2])
+        x['time_unix']=":".join(x['time_unix'].split(":")[:2]) + " น."
         data1.append(x)
     print(data1)
 
