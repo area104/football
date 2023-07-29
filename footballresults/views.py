@@ -24,8 +24,8 @@ def tablestoday(request, date):
     return render(request,"tablestoday.html")
 
 def tablesleagues(request, league_id):
-    date_begin = request.GET.get('date_begin', '')
-    date_end = request.GET.get('date_end', '')
+    date_begin = request.GET.get('begin_date', '')
+    date_end = request.GET.get('end_date', '')
     print("xx",date_begin,date_end)
     # save_all_matchs(gmt_offset = 7,league_id = league_id)
     data, league = get_all_matchs(league_id,date_unix_gte = date_begin,date_unix_lte = date_end)

@@ -36,20 +36,20 @@
 <section class="py-5" style="background-color: #f8f9fa;">
     <div class="container">
       <h2 class="mb-4" style="font-size: 2.5em; color: #495057;">เลือกช่วงเวลา</h2>
-      <form id="dateForm">
+      <form id="dateForm" action="/tablesleagues/{{league_id}}">
         <div class="row d-flex justify-content-center">
             <div class="col-lg-10 col-md-10 col-sm-12 mb-4">
                 <div class="row d-flex justify-content-between">
                     <div class="col-lg-4 col-md-5 col-sm-12 mb-4">
                         <label for="startDate" class="form-label" style="font-weight: bold;">จากวันที่</label>
-                        <input type="date" class="form-control" id="startDate" placeholder="YYYY-MM-DD" required pattern="\d{4}-\d{2}-\d{2}" style="border-radius: 20px;">
+                        <input type="date" class="form-control" name="begin_date" id="startDate" placeholder="YYYY-MM-DD" required pattern="\d{4}-\d{2}-\d{2}" style="border-radius: 20px;">
                         <div class="invalid-feedback" style="color: #dc3545;">
                             Please choose a valid start date.
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-5 col-sm-12 mb-4">
                         <label for="endDate" class="form-label" style="font-weight: bold;">ถึงวันที่</label>
-                        <input type="date" class="form-control" id="endDate" placeholder="YYYY-MM-DD" required pattern="\d{4}-\d{2}-\d{2}" style="border-radius: 20px;">
+                        <input type="date" class="form-control" name="end_date" id="endDate" placeholder="YYYY-MM-DD" required pattern="\d{4}-\d{2}-\d{2}" style="border-radius: 20px;">
                         <div class="invalid-feedback" style="color: #dc3545;">
                             Please choose a valid end date.
                         </div>
@@ -118,6 +118,25 @@
   </section>
   
   <script>
+
+            // Function to extract the value of a GET parameter from the URL
+            function getQueryParamValue(parameter) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(parameter);
+        }
+
+        // Get the value of the 'param' GET parameter from the URL
+        const begin_date = getQueryParamValue('begin_date');
+        const end_date = getQueryParamValue('end_date');
+        console.log(begin_date,end_date);
+        if (begin_date !== null){
+          document.getElementById("startDate").value = begin_date
+        }
+        if (end_date !== null){
+          document.getElementById("endDate").value = end_date
+        }
+
+
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function () {
       'use strict'
