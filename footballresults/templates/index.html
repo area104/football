@@ -22,7 +22,7 @@
   <header class=" text-center py-5" style="color: #333;">
     <div class="container">
       <h1 style="font-size: 60px; color: #343a40; font-weight: bold; line-height: 1.2;">เลือกลีก</h1>
-      <p class="lead" style="font-size: 24px; color: #6c757d; font-weight: 300;">ผลบอลออนไลน์</p>
+      <!-- <p class="lead" style="font-size: 24px; color: #6c757d; font-weight: 300;">ผลบอลออนไลน์</p> -->
     </div>
   </header>
   
@@ -32,11 +32,10 @@
     <div class="container">
       <div class="row">{% for league in all_leagues %}
         <!-- Card 1 -->
-        <div class="col-lg-3 col-md-4 col-sm-6  mb-4"><a href="/tablesleagues/{{ league.league_id }}">
+        <div class="col-lg-3 col-md-4 col-sm-6  mb-4"><a href="/tablesleagues/{{ league.league_id_last }}">
           <div class="card h-100 shadow-sm rounded">
             <div class="row d-flex justify-content-center py-4">
                 <div class="col-11">
-                  <!-- <img src="{% static '/images/leagues/Logo_UEFA_Champions_League.png' %}" class="card-img-top" alt="Image"> -->
                   <img src="{% static 'images/leagues/' %}{{ league.image }}" class="card-img-top" alt="Image">
                 </div>
             </div>
@@ -54,9 +53,9 @@
     </div>
     
   </section>
-  <ul>
+  <!-- <ul>
     <li>AAAAAAA</li>
   {% for user in users %}
   <li>{{ user.home_team }} , {{ user.home_score }}</li>
-{% endfor %}</ul>
+{% endfor %}</ul> -->
 {% endblock %}

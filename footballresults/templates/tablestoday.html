@@ -45,54 +45,71 @@
   <section>
     <div class="container">
       <nav class="d-flex justify-content-between my-4">
-          <button class="btn btn-link nav-button">
-              <i class="fas fa-chevron-left"></i> 19 ก.ค. 66
-          </button>
+        <a href="/tablestoday/{{date_bf}}"><button class="btn btn-link nav-button">
+              <i class="fas fa-chevron-left"></i> {{date_bf_th}}
+          </button></a>
           <button class="btn btn-secondary" style="background-color: #328b8b;">
-              <i class="fas fa-calendar-day"></i> วันพฤหัสบดี 20 ก.ค. 2566
+              <i class="fas fa-calendar-day"></i> {{date_th}}
           </button>
-          <button class="btn btn-link nav-button">
-              21 ก.ค. 66 <i class="fas fa-chevron-right"></i>
-          </button>
+          <a href="/tablestoday/{{date_af}}"><button class="btn btn-link nav-button">
+            {{date_af_th}} <i class="fas fa-chevron-right"></i>
+          </button></a>
       </nav>
-      <div class="row">
+
+  </div>
+  </section>
+
+  <section>
+    <div class="container"><div class="row">
           <div class="col">
-              <div class="table-responsive">
-                  <table class="table">
-                      <thead>
-                          <tr>
-                              <th>ผลบอลบราซิล-เซเรีย-บี</th>
-                          </tr>
-                      </thead>
-                  </table>
-                  <table class="table">
+              <div class="table">
+                <table class="table table-hover">
+                  {% for date in data %}
+                  
+                  <thead class="table">
+                    <tr><td><br/></td></tr>
+                    <tr class="py-3 my-3">
+                        <th colspan="5">{{date.0.name}}</th>
+                    </tr>
+                </thead>
+                
                       <thead>
                           <tr>
                               <th>เวลา</th>
                               <th>ทีมเจ้าบ้าน</th>
                               <th>ผลบอล</th>
                               <th>ทีมเยือน</th>
-                              <th>วิเคราะห์บอล</th>
+                              <th>Status</th>
                           </tr>
                       </thead>
                       <tbody>
-                          <tr>
-                              <td>07:30</td>
-                              <td>สปอร์ต คลับ เรซิเฟ่</td>
-                              <td><a href="/matchdetail" class="text-decoration-none text-dark">1-2</a></td>
-                              <td><div class="p-2 rounded bg-success text-white">Open</div>
-                                <div class="p-2 rounded bg-danger text-white">Closed</div>
-                                <div class="p-2 rounded bg-warning text-dark">Warning</div>
-                                
+                          {% for league in date %}
+                              <tr>
+                                  <td>{{league.time_unix}}</td>
+                                  <td>{{league.home_name}}</td>
+                                  <td class="text-center">
+                                    <a href="/matchdetail/{{league.league_id}}/{{league.match_id}}" class="text-decoration-none {% if league.home_goal_count > league.away_goal_count %}text-success bg-light p-2 rounded{% elif league.home_goal_count < league.away_goal_count %}text-danger bg-light p-2 rounded{% else %}text-dark{% endif %}" style="font-weight: bold; font-size: 1.2em;">
+                                        {{league.home_goal_count}} - {{league.away_goal_count}}
+                                    </a>
                                 </td>
-                              <td><button class="btn btn-secondary">วิเคราะห์ <i class="fas fa-arrow-down"></i></button></td>
-                          </tr>
+                                
+                                  <td>{{league.away_name}}</td>
+                                  <td>
+                                      {% if league.status == 'complete' %}
+                                          <span class="badge bg-success">{{league.status}}</span>
+                                      {% else %}
+                                          <span class="badge bg-warning">{{league.status}}</span>
+                                      {% endif %}
+                                  </td>
+                              </tr>
+                          {% endfor %}
                       </tbody>
-                  </table>
+                  {% endfor %}
+              </table>
+              
               </div>
           </div>
       </div>
   </div>
   </section>
-
 {% endblock %}

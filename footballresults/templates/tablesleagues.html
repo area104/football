@@ -21,7 +21,7 @@
   <!-- Header Section bg-light -->
   <header class=" text-center py-5" style="color: #333;">
     <div class="container">
-      <h3 style="font-size: 40px; color: #343a40; font-weight: bold; line-height: 1.2;">ผลบอล {{league1.name}}  ({{league1.country}})</h3>
+      <h4 style="font-size: 30px; color: #343a40; font-weight: bold; line-height: 1.2;">ผลบอล {{league1.name}}  ({{league1.country}})</h4>
       <!-- <p class="lead" style="font-size: 24px; color: #6c757d; font-weight: 300;">ผลบอลออนไลน์</p> -->
     </div>
   </header>
@@ -33,9 +33,9 @@
     {% endfor %}</ul> -->
 </section>
 
-<section class="py-5" style="background-color: #f8f9fa;">
+<section class="py-5" style="background-color: #fdfdfd;">
     <div class="container">
-      <h2 class="mb-4" style="font-size: 2.5em; color: #495057;">เลือกช่วงเวลา</h2>
+      <h2 class="mb-4" style="font-size: 1.5em; color: #495057;">เลือกช่วงเวลา</h2>
       <form id="dateForm" action="/tablesleagues/{{league_id}}">
         <div class="row d-flex justify-content-center">
             <div class="col-lg-10 col-md-10 col-sm-12 mb-4">
@@ -66,54 +66,56 @@
   </section>
 
   <section>
-    <div class="container">
-        {% for date in data %}
-      <div class="row">
+    <div class="container"><div class="row">
           <div class="col">
               <div class="table">
-                  <table class="table">
-                      <thead>
-                          <tr>
-                              <th>วันที่ {{date.0.date_unix}}</th>
-                          </tr>
-                      </thead>
-                  </table>
-                  <table class="table">
+                <table class="table table-hover">
+                  {% for date in data %}
+                  
+                  <thead class="table">
+                    <tr><td><br/></td></tr>
+                    <tr class="py-3 my-3">
+                        <th colspan="5">วันที่ {{date.0.date_unix_thai}}</th>
+                    </tr>
+                </thead>
+                
                       <thead>
                           <tr>
                               <th>เวลา</th>
                               <th>ทีมเจ้าบ้าน</th>
                               <th>ผลบอล</th>
                               <th>ทีมเยือน</th>
-                              <th>status</th>
+                              <th>Status</th>
                           </tr>
                       </thead>
-                      <tbody><!-- <li>,{{league.home_image}},
-    {{league.away_image}},</li> -->
-                        {% for league in date %}
-
-                          <tr>
-                              <td>{{league.time_unix}}</td>
-                              <td>{{league.home_name}}</td>
-                              <td><center><a href="/matchdetail/{{league_id}}/{{league.match_id}}/{{league.home_id}}/{{league.away_id}}" class="text-decoration-none text-dark">{{league.home_goal_count}} - {{league.away_goal_count}}</a></center></td>
-                              <td>{{league.away_name}}</td>
-                              <td>
-                                {% if league.status == 'complete' %}
-                                <div class="p-2 rounded bg-success text-white">{{league.status}}</div>
-                                {% else %}
-                                <div class="p-2 rounded bg-warning text-dark">{{league.status}}</div>
-                                {% endif %}
+                      <tbody>
+                          {% for league in date %}
+                              <tr>
+                                  <td>{{league.time_unix}}</td>
+                                  <td>{{league.home_name}}</td>
+                                  <td class="text-center">
+                                    <a href="/matchdetail/{{league_id}}/{{league.match_id}}" class="text-decoration-none {% if league.home_goal_count > league.away_goal_count %}text-success bg-light p-2 rounded{% elif league.home_goal_count < league.away_goal_count %}text-danger bg-light p-2 rounded{% else %}text-dark{% endif %}" style="font-weight: bold; font-size: 1.2em;">
+                                        {{league.home_goal_count}} - {{league.away_goal_count}}
+                                    </a>
                                 </td>
-                              
-                          </tr>{% endfor %}
-                          <!-- <td><button class="btn btn-secondary">วิเคราะห์ <i class="fas fa-arrow-down"></i></button></td> -->
+                                
+                                  <td>{{league.away_name}}</td>
+                                  <td>
+                                      {% if league.status == 'complete' %}
+                                          <span class="badge bg-success">{{league.status}}</span>
+                                      {% else %}
+                                          <span class="badge bg-warning">{{league.status}}</span>
+                                      {% endif %}
+                                  </td>
+                              </tr>
+                          {% endfor %}
                       </tbody>
-                  </table>
+                  {% endfor %}
+              </table>
+              
               </div>
           </div>
       </div>
-      {% endfor %}
-
   </div>
   </section>
   

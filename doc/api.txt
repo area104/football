@@ -1,0 +1,9 @@
+all league:
+https://api.football-data-api.com/league-list?key=test85g57
+
+teams:
+https://api.football-data-api.com/league-teams?key=test85g57&season_id=7704&include=stats
+
+matches:
+https://api.football-data-api.com/league-matches?key=test85g57&season_id=7704
+

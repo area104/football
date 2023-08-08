@@ -1,12 +1,12 @@
 
-{% extends "base.html" %}
-{% load static %}
-{% block title %}
-ผลฟุตบอล
-{% endblock %}
-
-{% block content %}
-<style>
+  {% extends "base.html" %}
+  {% load static %}
+  {% block title %}
+  ผลฟุตบอล
+  {% endblock %}
+  
+  {% block content %}
+  <style>
           .nav-button {
             color: #4caf50;
             transition: color 0.2s ease;
@@ -23,64 +23,93 @@
         .btn-secondary:hover {
             background-color: #388e3c;
         }
-</style>
-<section>
-    <div class="row">
-        <div class="col-12">
-            <div class="d-flex justify-content-center m-1">
-                <!-- <img src = "{% static 'images/home.png' %}" style="max-width: 95%;"/>  -->
-            </div>
-        </div>
-    </div>
-    
-    
-  </section>
-  <!-- Header Section bg-light -->
-  <header class=" text-center py-5" style="color: #333;">
-    <div class="container">
-      <h3 style="font-size: 40px; color: #343a40; font-weight: bold; line-height: 1.2;">ผลบอลวันนี้</h3>
-      <!-- <p class="lead" style="font-size: 24px; color: #6c757d; font-weight: 300;">ผลบอลออนไลน์</p> -->
-    </div>
-  </header>
- 
 
-  <section class="match__livescore">
-    <div class="container">
-      <div class="row">
-        <div class="col">
-          <h2 class="match__result"><a href="https://football.kapook.com">ผลบอลสด</a> Live Score ผลบอล</h2>
-          <div class="d-flex align-items-center">
-            <figure class="me-3">
-              <img src="https://cdn.sportmonks.com/images/soccer/teams/18/18.png" class="img-fluid">
-              <figcaption>เชลซี</figcaption>
-            </figure>
+  </style>
+
+  
+  
+  <div class="container">
+    <section class="match__livescore">
+      <div class="container">
+        <div class="row py-5 d-flex justify-content-center">
+
+        
+        <div class="row col-8 align-items-center d-flex justify-content-center">
+          <div class="col-4 d-flex flex-column">
+              <div class="d-flex align-items-center">
+                  <figure class="me-3">
+                      <img src="https://cdn.footystats.org/img/teams/{{data.home_image}}" style="height: 200px;"  class="img-fluid">
+                      <figcaption class="text-center">{{data.home_name}}</figcaption>
+                  </figure>
+              </div>
           </div>
-        </div>
-        <div class="col d-flex flex-column align-items-center justify-content-center">
-          <p id="18825137" class="match__status MatchST_ft"></p>
-          <div class="p-2 rounded border shadow text-center" style="font-size: 2rem;">
-              <strong class="match__score__final h1">5-0</strong>
-          </div>
-          <span class="match__text" style="display: none;">90 '</span>
-          <div class="bet_match_inside">
-            <pie class="hundreds"></pie>
-            <pie class="hundreds"></pie>
-          (2)
-          </div>
-        </div>
-        <div class="col">
-          <div class="d-flex align-items-center justify-content-end">
-            <figure class="ms-3">
-              <img src="https://cdn.sportmonks.com/images/soccer/teams/27/283.png" class="img-fluid">
-              <figcaption>เร็กซ์แฮม</figcaption>
-            </figure>
-            <div class="match__team__note">                   
+              <div class="col-4 d-flex flex-column align-items-center">
+                  <p id="18825137" class="match__status MatchST_ft"></p>
+                  <div class="p-2 rounded border shadow text-center" style="font-size: 2rem;">
+                      <strong class="match__score__final h1">{{data.home_goal_count}} - {{data.away_goal_count}}</strong>
+                  </div>
+              </div>
+  
+              <div class="col-4 d-flex flex-column">
+                <div class="d-flex align-items-center">
+                    <figure class="me-3">
+                        <img src="https://cdn.footystats.org/img/teams/{{data.away_image}}" style="height: 200px;" class="img-fluid">
+                        <figcaption class="text-center">{{data.away_name}}</figcaption>
+                    </figure>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>    
+      </div>    </div>
   </section>
   
-
-{% endblock %}
+      
+      <section class="my-5">
+          <div class="container">
+              <h2 class="text-center mb-4">Match Details</h2>
+              <table class="table table-striped table-hover">
+                  <thead>
+                      <tr>
+                          <th>Stat</th>
+                          <th>Home Team</th>
+                          <th>Away Team</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr><td>Goals</td><td>{{data.home_goal_count}}</td><td>{{data.away_goal_count}}</td></tr>
+                      <tr><td>yellow_cards</td><td>{{data.team_a_yellow_cards}}</td><td>{{data.team_b_yellow_cards}}</td></tr>
+      <tr><td>red_cards</td><td>{{data.team_a_red_cards}}</td><td>{{data.team_b_red_cards}}</td></tr>
+      <tr><td>dangerous_attacks</td><td>{{data.team_a_dangerous_attacks}}</td><td>{{data.team_b_dangerous_attacks}}</td></tr>
+      <tr><td>attacks</td><td>{{data.team_a_attacks}}</td><td>{{data.team_b_attacks}}</td></tr>
+      <tr><td>goal_count</td><td>{{data.home_goal_count}}</td><td>{{data.away_goal_count}}</td></tr>
+                  </tbody>
+              </table>
+          </div>
+      </section>
+  
+      <section class="my-5">
+          <div class="container">
+              <h2 class="text-center mb-4">Game Information</h2>
+              <table class="table table-striped table-hover">
+                  <tbody>
+                      <tr><td>Winning Team</td><td>{{data.winning_team}}</td></tr>
+                      <tr><td>status</td><td>{{data.status}}</td></tr>
+                      <tr><td>season</td><td>{{data.season}}</td></tr>
+                      <tr><td>league_id</td><td>{{data.league_id}}</td></tr>
+                      
+                      <tr><td>game_week</td><td>{{data.game_week}}</td></tr>
+                      
+                      <tr><td>stadium_name</td><td>{{data.stadium_name}}</td></tr>
+                      
+                      <tr><td>date_unix_thai</td><td>{{data.date_unix_thai}}</td></tr>
+                      <tr><td>time_unix</td><td>{{data.time_unix}}</td></tr>
+                      <tr><td>winning_team</td><td>{{data.winning_team}}</td></tr>
+                      <tr><td>date_unix_thai</td><td>{{data.date_unix_thai}}</td></tr>
+                  </tbody>
+              </table>
+          </div>
+      </section>
+  
+  </div>
+  
+  {% endblock %}
+  

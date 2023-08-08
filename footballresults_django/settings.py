@@ -82,6 +82,7 @@ WSGI_APPLICATION = 'footballresults_django.wsgi.application'
 #     }
 # }
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
