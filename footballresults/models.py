@@ -1,7 +1,7 @@
 from djongo import models
 
-class FootballMatch(models.Model):
 
+class FootballMatch(models.Model):
     _id = models.ObjectIdField()
     league_id = models.IntegerField()
     match_id = models.IntegerField()
@@ -53,6 +53,7 @@ class FootballMatch(models.Model):
 
     def __str__(self):
         return f"{self.match_id} vs {self.away_image}"
+
 
 class FootballLeague(models.Model):
     _id = models.ObjectIdField()
@@ -136,7 +137,6 @@ class FootballTeams(models.Model):
     def __str__(self):
         return f"self.name vs self.league_id"
 
-
 class FootballTeamStat(models.Model):
     _id = models.ObjectIdField()
     name = models.CharField(max_length=200)
@@ -150,3 +150,4 @@ class FootballTeamStat(models.Model):
 
     def __str__(self):
         return f"self.name vs self.league_id"
+

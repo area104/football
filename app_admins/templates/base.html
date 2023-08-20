@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=K2D:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+  <link rel="icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+  
+  
+  <title>{% block title %}หน้าแรก{% endblock %}</title>
+
+<body style="background-color: #fefefe;">
+   <!-- Navbar Section -->
+   <nav class="navbar navbar-expand-lg navbar-dark" style="padding: 1rem 3rem; background-color: #004445;">
+    <div class="container d-flex justify-content-between mx-1">
+      <a class="navbar-brand fs-2 text-light" href="/" style="font-weight: bold;">ผลบอลออนไลน์</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="border-color: #ffffff;">
+        <!-- <span class="navbar-toggler-icon"></span> -->
+        <i class="fas fa-bars menu-icon text-light" aria-hidden="true"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a class="nav-link text-light" href="/" style="font-weight: bold; transition: color 0.2s ease-in-out;">หน้าหลัก</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="/tablestoday" style="font-weight: bold; transition: color 0.2s ease-in-out;">ผลบอลวันนี้</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <main>
+    {% block content %}
+    <!-- Default content for child templates -->
+    {% endblock %}
+</main>
+
+  <!-- Footer Section -->
+  <footer class="footer-section py-5" style="background-color: #004445; color: #fff;">
+    <div class="container text-center">
+      <p style="font-size: 1.5em; margin-bottom: 1em;">ผลบอลออนไลน์</p>
+      <ul class="list-inline" style="font-size: 1.2em;">
+        <li class="list-inline-item px-2"><a href="/" style="color: #fff; text-decoration: none;">หน้าหลัก</a></li>
+        <li class="list-inline-item px-2"><a href="/about" style="color: #fff; text-decoration: none;">เกี่ยวกับเรา</a></li>
+        <!-- <li class="list-inline-item px-2"><a href="#" style="color: #fff; text-decoration: none;">Contact</a></li> -->
+      </ul>
+    </div>
+  </footer>
+
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

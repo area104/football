@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}
+Setting
+{% endblock %}
+{% block content %}
+<div class="row d-flex justify-content-center p-3">
+    <div class="col-sm-6 col-md-6 col-lg-6">
+<form method="post" class="form-control">
+    {% csrf_token %}
+    
+    <div class="mb-3">
+        {{ form.line_api_key.label_tag }}
+        {{ form.line_api_key }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.add_league_name.label_tag }}
+        {{ form.add_league_name }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.duration_for_get_leagues_data.label_tag }}
+        {{ form.duration_for_get_leagues_data }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.duration_for_get_teams_data.label_tag }}
+        {{ form.duration_for_get_teams_data }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.duration_for_get_matches_data.label_tag }}
+        {{ form.duration_for_get_matches_data }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.api_key.label_tag }}
+        {{ form.api_key }}
+    </div>
+
+
+    <input type="submit" value="Save" class="btn btn-primary">
+</form></div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>League Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {# Assuming you have a list of leagues passed to the template #}
+        {% for league in leagues %}
+        <tr>
+            <td>{{ league.name }}</td>
+            <td>
+                <form method="post" action="{% url 'delete_league' league.id %}">
+                    {% csrf_token %}
+                    <input type="submit" value="Delete" class="btn btn-danger">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

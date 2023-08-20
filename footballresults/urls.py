@@ -12,5 +12,10 @@ urlpatterns = [
     
     path('about',views.about),
     path('matchdetail/<int:league_id>/<int:match_id>',views.matchdetail),
+    # path('admin_login',views.admin_login),
+    # path('admin_users',views.admin_user),
+    # path('admin_setting',views.admin_setting),
+    # path('admin_register',views.admin_register),
+
     
 ]

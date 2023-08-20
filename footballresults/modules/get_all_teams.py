@@ -6,6 +6,9 @@ import time
 import requests
 import datetime
 from glob import glob
+from app_admins.models import AdminSetting
+from concurrent.futures import ThreadPoolExecutor
+
 def save_image_from_url(url, save_path):
     os.makedirs(save_path, exist_ok=True)
     
@@ -55,11 +58,17 @@ def get_all_teams():
     pass
 
 def save_all_teams(season_id = 8777,save_img = False):
+    
+    setting = AdminSetting.objects.first()
+    
+    league_list, api, key = setting.league_list, setting.web_api, setting.api_key
 
-    file_path_img = os.path.join(settings.BASE_DIR, 'footballresults', 'static', 'images','teams')
-    file_path = os.path.join(settings.BASE_DIR, 'footballresults', 'data', 'league-teams.json')
-    with open(file_path,"r") as f:
-        data = json.load(f)
+    file_path_img = os.path.join(settings.BASE_DIR, 
+    'footballresults', 'static', 'images','teams')
+    response = requests.get(f"{api}league-teams?key={key}&season_id={season_id}&include=stats")
+
+    data = response.json()
+    print("aa000",data,"bb111")
     if data['success']:
         data = data["data"]
     else:
@@ -68,13 +77,16 @@ def save_all_teams(season_id = 8777,save_img = False):
 
     data = list(map(lambda x: league_team_filter(x, season_id),data))
     print(data)
-    if save_img:
-        for league in data:
-            save_image_from_url(league["image"], file_path_img)
-            time.sleep(0.1)
+    with ThreadPoolExecutor() as executor:
+        executor.map(lambda league: save_image_from_url(league["image"], 
+                                            file_path_img), data)
+
+    # for league in data:
+    #     save_image_from_url(league["image"], file_path_img)
+    #     time.sleep(0.1)
 
 
-    count, _ = FootballTeams.objects.all().delete()
+    count, _ = FootballTeams.objects.filter(season_id = season_id).delete()
 
     for team in data:
         

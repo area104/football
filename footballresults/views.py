@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 # Import the model
-from footballresults.models import FootballMatch, FootballLeague
+from footballresults.models import FootballMatch, FootballLeague 
 import json
 from django.conf import settings
 import os
@@ -17,10 +17,31 @@ from .modules.get_all_matchs import *
 from .modules.get_match_detail import *
 from .modules.get_all_teams import *
 from pythainlp.util import thai_strftime
+# from .forms import LoginForm, AdminSettingsForm, RegisterForm
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import authenticate
+from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+from rest_framework_simplejwt.tokens import AccessToken
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import check_password
+
+from django.contrib.auth.backends import BaseBackend
+
+from rest_framework_simplejwt.tokens import TokenError, UntypedToken
+from rest_framework_simplejwt.state import token_backend
+
+from rest_framework_simplejwt.tokens import TokenError, UntypedToken
+from rest_framework_simplejwt.state import token_backend
+
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
+
 # ok
 def index(request):
     # print(save_all_teams(season_id = 8777,save_img = True))
     save_all_leagues()
+    
     all_leagues = get_all_leagues()
 
     return render(request,"index.html",{"all_leagues":all_leagues})
@@ -50,6 +71,7 @@ def tablestoday(request, date):
 
 
 def tablesleagues(request, league_id):
+    save_all_teams(season_id = league_id)
     date_begin = request.GET.get('begin_date', '')
     date_end = request.GET.get('end_date', '')
     
@@ -71,5 +93,3 @@ def matchdetail(request, league_id,match_id):
     data = get_match_detail(league_id, match_id)
 
     return render(request,"matchdetail.html",{"data":data})
-
-    

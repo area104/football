@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'footballresults',
-    'djongo'
+    'app_admins',
+    'djongo',
 ]
 
 MIDDLEWARE = [
@@ -86,7 +87,7 @@ WSGI_APPLICATION = 'footballresults_django.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'footballdb',
+        'NAME': 'footballdb3',
         'ENFORCE_SCHEMA': True,
         'CLIENT': {
             'host': 'localhost',       # Change 'your_host' to 'localhost'
@@ -141,3 +142,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+#Auth
+LOGIN_REDIRECT_URL = "/admins/setting"
+LOGOUT_REDIRECT_URL = "/admins/login"

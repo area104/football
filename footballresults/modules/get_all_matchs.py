@@ -9,8 +9,9 @@ from itertools import groupby
 from datetime import timedelta
 import requests
 import time
-from mongoengine import Q
-
+from ..modules.read_api import *
+from app_admins.models import AdminSetting
+from concurrent.futures import ThreadPoolExecutor
 
 def datetime_f(data):
     gmt_offset = 7
@@ -41,18 +42,20 @@ def match_filter(matchs,league_id):
     matchs["away_image"] = matchs["away_image"].split("/")[-1]
     return matchs
     
-def league_match(league_id = 7704):
-    r = requests.get(f"https://api.football-data-api.com/league-matches?key=test85g57&season_id={league_id}")
-
+def league_match(setting, league_id = 7704):
+    
+    league_list, api, key = setting.league_list, setting.web_api, setting.api_key
+    league_list = [x.strip().replace("-","").replace("  "," ") for x in league_list.split("\n")]
+    r = requests.get(f"{api}league-matches?key={key}&season_id={league_id}")
     data = r.json()
     
     if data['success']:
         data = data["data"]
     else:
         data = []
-    data = list(map(lambda data: match_filter(data, league_id),data))
-    data = list(map(datetime_f,data))
-    data = list(map(convert_datetime,data))
+    data = list(map(lambda data: convert_datetime(datetime_f(match_filter(data, league_id))),data))
+    # data = list(map(,data))
+    # data = list(map(,data))
     return data
 
 
@@ -63,8 +66,60 @@ def convert_datetime(data):
     return data
 
 
+def add_match(match, timestamp_now):
+    
+    defaults = {
+    "round_id":match['roundID'], 
+    "game_week":match['game_week'], 
+    "home_goals":match['homeGoals'],
+    "away_goals":match['awayGoals'],  
+    "team_a_yellow_cards":match['team_a_yellow_cards'],
+    "team_b_yellow_cards":match['team_b_yellow_cards'], 
+    "team_a_red_cards":match['team_a_red_cards'], 
+    "team_b_red_cards":match['team_b_red_cards'], 
+    "stadium_name":match['stadium_name'], 
+    "team_a_dangerous_attacks":match['team_a_dangerous_attacks'], 
+    "team_b_dangerous_attacks":match['team_b_dangerous_attacks'], 
+    "team_a_attacks":match['team_a_attacks'],
+    "team_b_attacks":match['team_b_attacks'], 
+    "team_a_xg":match['team_a_xg'], 
+    "team_b_xg":match['team_b_xg'], 
+    "team_a_penalties_won":match['team_a_penalties_won'], 
+    "team_b_penalties_won":match['team_b_penalties_won'],
+    "team_a_penalty_goals":match['team_a_penalty_goals'], 
+    "team_b_penalty_goals":match['team_b_penalty_goals'], 
+    "team_a_penalty_missed":match['team_a_penalty_missed'], 
+    "team_b_penalty_missed":match['team_b_penalty_missed'],
+    "team_a_throwins":match['team_a_throwins'], 
+    "team_b_throwins":match['team_b_throwins'], 
+    "team_a_freekicks":match['team_a_freekicks'],
+    "team_b_freekicks":match['team_b_freekicks'], 
+    "team_a_goalkicks":match['team_a_goalkicks'],
+    "team_b_goalkicks":match['team_b_goalkicks'],
+    "date_unix" : match["date_unix"],
+    "date_unix_thai" : match["date_unix_thai"],
+    "home_id" : match["homeID"],
+    "away_id" : match["awayID"],
+    "season" : match["season"],
+    "status" : match["status"],
+    "home_goal_count" : match["homeGoalCount"],
+    "away_goal_count" : match["awayGoalCount"],
+    "winning_team" : match["winningTeam"],
+    "home_name" : match["home_name"],
+    "away_name" : match["away_name"],
+    "home_image" : match["home_image"].split("/")[-1],
+    "away_image" : match["away_image"].split("/")[-1],
+    "time_unix" : match["time_unix"],
+    "date_update" : timestamp_now,
+    }
 
+    FootballMatch.objects.update_or_create(
+        league_id=match["league_id"],
+        match_id=match["id"],
+        defaults=defaults
+    )
 def save_all_matchs(league_id):
+    setting = AdminSetting.objects.first()
     # FootballMatch.objects.all().delete()
     
     # print(data)
@@ -73,60 +128,13 @@ def save_all_matchs(league_id):
         latest_entry = FootballMatch.objects.filter(league_id = league_id).latest('date_update').date_update
     except:
         latest_entry = 0
-    if abs(latest_entry - timestamp_now) > 60*10:
-        data = league_match(league_id = league_id)
-        for match in data:
+    if abs(latest_entry - timestamp_now) > int(setting.time_matches_update*60):
+        data = league_match(setting,league_id = league_id)
+        with ThreadPoolExecutor() as executor:
+            executor.map(lambda x: add_match(x,timestamp_now), data)
+        # for x in data:
+        #     add_match(x,timestamp_now)
 
-            defaults = {
-            "round_id":match['roundID'], 
-            "game_week":match['game_week'], 
-            "home_goals":match['homeGoals'],
-            "away_goals":match['awayGoals'],  
-            "team_a_yellow_cards":match['team_a_yellow_cards'],
-            "team_b_yellow_cards":match['team_b_yellow_cards'], 
-            "team_a_red_cards":match['team_a_red_cards'], 
-            "team_b_red_cards":match['team_b_red_cards'], 
-            "stadium_name":match['stadium_name'], 
-            "team_a_dangerous_attacks":match['team_a_dangerous_attacks'], 
-            "team_b_dangerous_attacks":match['team_b_dangerous_attacks'], 
-            "team_a_attacks":match['team_a_attacks'],
-            "team_b_attacks":match['team_b_attacks'], 
-            "team_a_xg":match['team_a_xg'], 
-            "team_b_xg":match['team_b_xg'], 
-            "team_a_penalties_won":match['team_a_penalties_won'], 
-            "team_b_penalties_won":match['team_b_penalties_won'],
-            "team_a_penalty_goals":match['team_a_penalty_goals'], 
-            "team_b_penalty_goals":match['team_b_penalty_goals'], 
-            "team_a_penalty_missed":match['team_a_penalty_missed'], 
-            "team_b_penalty_missed":match['team_b_penalty_missed'],
-            "team_a_throwins":match['team_a_throwins'], 
-            "team_b_throwins":match['team_b_throwins'], 
-            "team_a_freekicks":match['team_a_freekicks'],
-            "team_b_freekicks":match['team_b_freekicks'], 
-            "team_a_goalkicks":match['team_a_goalkicks'],
-            "team_b_goalkicks":match['team_b_goalkicks'],
-            "date_unix" : match["date_unix"],
-            "date_unix_thai" : match["date_unix_thai"],
-            "home_id" : match["homeID"],
-            "away_id" : match["awayID"],
-            "season" : match["season"],
-            "status" : match["status"],
-            "home_goal_count" : match["homeGoalCount"],
-            "away_goal_count" : match["awayGoalCount"],
-            "winning_team" : match["winningTeam"],
-            "home_name" : match["home_name"],
-            "away_name" : match["away_name"],
-            "home_image" : match["home_image"].split("/")[-1],
-            "away_image" : match["away_image"].split("/")[-1],
-            "time_unix" : match["time_unix"],
-            "date_update" : timestamp_now,
-            }
-        
-            FootballMatch.objects.update_or_create(
-                league_id=match["league_id"],
-                match_id=match["id"],
-                defaults=defaults
-            )
 
 
 def get_all_matchs(league_id, date_unix_gte = "2022-08-06",
