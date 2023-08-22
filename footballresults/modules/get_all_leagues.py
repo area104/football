@@ -8,7 +8,7 @@ import requests
 import datetime
 from glob import glob
 import datetime
-from ..modules.read_api import *
+from .linenotify import *
 
 from concurrent.futures import ThreadPoolExecutor
 from functools import partial
@@ -16,13 +16,14 @@ from functools import partial
 def save_image_from_url(url, save_path):
     os.makedirs(save_path, exist_ok=True)
     
-    filename = url.split("/")[-1]  # gets 'slovakia-i-liga-women.png'
-    save_path = os.path.join(save_path, filename)  # path where image will be saved
+    filename = url.split("/")[-1]  
+    save_path = os.path.join(save_path, filename) 
     if len(glob(save_path))==0:
         response = requests.get(url, stream=True)
         if response.status_code == 200:
             with open(save_path, 'wb') as f:
                 f.write(response.content)
+                time.sleep(0.2)
     return filename
                 
 
@@ -40,6 +41,7 @@ def save_match(league, timestamp_now):
         name=league["name"], 
         country=league["country"],
         image=league["image"].split("/")[-1], 
+        image_url=league["image"], 
         league_id_prev=league_id_prev,
         league_id_last=league["season"][-1]["id"],
         date_update=timestamp_now
@@ -50,42 +52,47 @@ def save_match(league, timestamp_now):
 
 
 
-def save_all_leagues(update = False):
-    
-    
-    setting = AdminSetting.objects.first()
-    
-    league_list, api, key = setting.league_list, setting.web_api, setting.api_key
-    league_list = [x.strip().replace("-","").replace("  "," ") for x in league_list.split("\n")]
-
-    timestamp_now = int(time.time())
+def save_all_leagues(update = False, save_img = False):
     try:
-        latest_entry = FootballLeague.objects.latest('date_update').date_update
+        setting = AdminSetting.objects.first()
+
+        league_list, api, key = setting.league_list, setting.web_api, setting.api_key
+        league_list = [x.strip().replace("-","").replace("  "," ") for x in league_list.split("\n")]
+
+        timestamp_now = int(time.time())
+        try:
+            latest_entry = FootballLeague.objects.latest('date_update').date_update
+        except:
+            latest_entry = 0
+
+        if abs(latest_entry - timestamp_now) > int(setting.time_league_update*60) or update:
+            response = requests.get(f"{api}league-list?key={key}")
+            data = response.json()
+            
+            if data['success']:
+                data = data["data"]
+            else:
+                data = []
+                send_line_notification("can not get data from league-list api")
+                return data
+
+            data = list(filter(lambda x: x['name'] in league_list, data))
+
+            if save_img:
+                file_path_img = os.path.join(settings.BASE_DIR, 'footballresults', 'static', 'images','leagues')
+
+                for league in data:
+                    save_image_from_url(league["image"], 
+                                                        file_path_img)
+
+            count, _ = FootballLeague.objects.all().delete()
+
+            # with ThreadPoolExecutor() as executor:
+            #     executor.map(lambda x: save_match(x, timestamp_now), data)
+            for x in data:
+                save_match(x, timestamp_now)
+
     except:
-        latest_entry = 0
-
-    if abs(latest_entry - timestamp_now) > int(setting.time_league_update*60):
-        response = requests.get(f"{api}league-list?key={key}")
-        data = response.json()
-        if data['success']:
-            data = data["data"]
-        else:
-            data = []
-            return data
-
-        data = list(filter(lambda x: x['name'] in league_list, data))
-
-        file_path_img = os.path.join(settings.BASE_DIR, 'footballresults', 'static', 'images','leagues')
-
-        
-
-        with ThreadPoolExecutor() as executor:
-            func = partial(save_image_from_url, save_path=file_path_img)
-            executor.map(func, [league["image"] for league in data])
-        
-        count, _ = FootballLeague.objects.all().delete()
-
-        with ThreadPoolExecutor() as executor:
-            executor.map(lambda x: save_match(x, timestamp_now), data)
+        send_line_notification("can not get data from league-list api")
 
 

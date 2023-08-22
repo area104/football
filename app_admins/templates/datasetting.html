@@ -1,7 +1,62 @@
 <table>
-    AAAAAAAAAA
+    <thead>
+        <tr>
+            <th>league_id</th>
+            <th>season</th>
+            <th>Date update</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for match in data_match %}
+            <tr>
+                <td>{{ match.league_id }}</td>
+                <td>{{ match.season }}</td>
+                <td>{{ match.date_update }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
 </table>
 
-{{ username }}
-<br/>
-{{id}}
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Country</th>
+            <th>Last League ID</th>
+            <th>Previous League ID</th>
+            <th>Date update</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for league in data_league %}
+            <tr>
+                <td>{{ league.name }}</td>
+                <td>{{ league.country }}</td>
+                <td>{{ league.league_id_last }}</td>
+                <td>{{ league.league_id_prev }}</td>
+                <td>{{ league.date_update }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<table>
+    <thead>
+        <tr>
+            <th>season_id</th>
+            <th>season</th>
+            <th>Date update</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for team in data_team %}
+            <tr>
+                <td>{{ team.season_id }}</td>
+                <td>{{ team.season }}</td>
+                <td>{{ team.date_update }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -35,8 +35,11 @@
         <div class="col-lg-3 col-md-4 col-sm-6  mb-4"><a href="/tablesleagues/{{ league.league_id_last }}">
           <div class="card h-100 shadow-sm rounded">
             <div class="row d-flex justify-content-center py-4">
-                <div class="col-11">
+                <!-- <div class="col-11">
                   <img src="{% static 'images/leagues/' %}{{ league.image }}" class="card-img-top" alt="Image">
+                </div> -->
+                <div class="col-11">
+                  <img src="{{ league.image_url }}" class="card-img-top" alt="Image">
                 </div>
             </div>
             <div class="card-body d-flex justify-content-center">

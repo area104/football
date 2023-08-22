@@ -38,7 +38,7 @@
           <div class="col-4 d-flex flex-column">
               <div class="d-flex align-items-center">
                   <figure class="me-3">
-                      <img src="{% static 'images/teams/' %}{{ data.home_image}}" style="height: 200px;"  class="img-fluid">
+                      <img src="{{ data.home_image_url}}" style="height: 200px;"  class="img-fluid">
                       <figcaption class="text-center">{{data.home_name}}</figcaption>
                   </figure>
               </div>
@@ -53,7 +53,7 @@
               <div class="col-4 d-flex flex-column">
                 <div class="d-flex align-items-center">
                     <figure class="me-3">
-                        <img src="{% static 'images/teams/' %}{{data.away_image}}" style="height: 200px;" class="img-fluid">
+                        <img src="{{data.away_image_url}}" style="height: 200px;" class="img-fluid">
                         <figcaption class="text-center">{{data.away_name}}</figcaption>
                     </figure>
                 </div>
@@ -75,16 +75,53 @@
                       </tr>
                   </thead>
                   <tbody>
+                    <tr><td>pre_match_overall_ppg</td><td>{{data.pre_match_teamA_overall_ppg}}</td><td>{{data.pre_match_teamB_overall_ppg}}</td></tr>
+                    <tr><td>pre_match_ppg</td><td>{{data.pre_match_home_ppg}}</td><td>{{data.pre_match_away_ppg}}</td></tr>
+                    <tr><td>ppg</td><td>{{data.home_ppg}}</td><td>{{data.away_ppg}}</td></tr>
+
                       <tr><td>Goals</td><td>{{data.home_goal_count}}</td><td>{{data.away_goal_count}}</td></tr>
                       <tr><td>yellow_cards</td><td>{{data.team_a_yellow_cards}}</td><td>{{data.team_b_yellow_cards}}</td></tr>
       <tr><td>red_cards</td><td>{{data.team_a_red_cards}}</td><td>{{data.team_b_red_cards}}</td></tr>
       <tr><td>dangerous_attacks</td><td>{{data.team_a_dangerous_attacks}}</td><td>{{data.team_b_dangerous_attacks}}</td></tr>
       <tr><td>attacks</td><td>{{data.team_a_attacks}}</td><td>{{data.team_b_attacks}}</td></tr>
-      <!-- <tr><td>goal_count</td><td>{{data.home_goal_count}}</td><td>{{data.away_goal_count}}</td></tr> -->
+      <tr><td>xg</td><td>{{data.team_a_xg}}</td><td>{{data.team_b_xg}}</td></tr>
+      <tr><td>penalties_won</td><td>{{data.team_a_penalties_won}}</td><td>{{data.team_a_penalties_won}}</td></tr>
+      <tr><td>penalty_goals</td><td>{{data.team_a_penalty_goals}}</td><td>{{data.team_b_penalty_goals}}</td></tr>
+      <tr><td>penalty_missed</td><td>{{data.team_a_penalty_missed}}</td><td>{{data.team_b_penalty_missed}}</td></tr>
+      <tr><td>throwins</td><td>{{data.team_a_throwins}}</td><td>{{data.team_b_throwins}}</td></tr>
+      <tr><td>freekicks</td><td>{{data.team_a_freekicks}}</td><td>{{data.team_b_freekicks}}</td></tr>
+      <tr><td>goalkicks</td><td>{{data.team_a_goalkicks}}</td><td>{{data.team_b_goalkicks}}</td></tr>
+
                   </tbody>
               </table>
           </div>
       </section>
+
+      {% if get_team %}
+      <section class="my-5">
+        <div class="container">
+            <h2 class="text-center mb-4">รายละเอียดทีม</h2>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ข้อมูล</th>
+                        <th>{{data.home_name}}</th>
+                        <th>{{data.away_name}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, value in teams.items %}
+            <tr>
+                <td>{{ key }}</td>
+                <td>{{ value.0 }}</td>
+                <td>{{ value.1 }}</td>
+            </tr>
+        {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+      {% endif %}
   
       <section class="my-5">
           <div class="container">

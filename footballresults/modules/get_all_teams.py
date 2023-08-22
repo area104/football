@@ -8,17 +8,22 @@ import datetime
 from glob import glob
 from app_admins.models import AdminSetting
 from concurrent.futures import ThreadPoolExecutor
+from .linenotify import *
 
 def save_image_from_url(url, save_path):
     os.makedirs(save_path, exist_ok=True)
-    
+    print(url)
     filename = url.split("/")[-1]  # gets 'slovakia-i-liga-women.png'
     save_path = os.path.join(save_path, filename)  # path where image will be saved
     if len(glob(save_path))==0:
         response = requests.get(url, stream=True)
+        # time.sleep(1)
         if response.status_code == 200:
             with open(save_path, 'wb') as f:
                 f.write(response.content)
+                time.sleep(0.5)
+    else:
+        print(glob(save_path))
 
 
 
@@ -57,98 +62,107 @@ def league_team_filter(data,season_id):
 def get_all_teams():
     pass
 
-def save_all_teams(season_id = 8777,save_img = False):
-    
-    setting = AdminSetting.objects.first()
-    
-    league_list, api, key = setting.league_list, setting.web_api, setting.api_key
-
-    file_path_img = os.path.join(settings.BASE_DIR, 
-    'footballresults', 'static', 'images','teams')
-    response = requests.get(f"{api}league-teams?key={key}&season_id={season_id}&include=stats")
-
-    data = response.json()
-    print("aa000",data,"bb111")
-    if data['success']:
-        data = data["data"]
-    else:
-        data = []
-
-
-    data = list(map(lambda x: league_team_filter(x, season_id),data))
-    print(data)
-    with ThreadPoolExecutor() as executor:
-        executor.map(lambda league: save_image_from_url(league["image"], 
-                                            file_path_img), data)
-
-    # for league in data:
-    #     save_image_from_url(league["image"], file_path_img)
-    #     time.sleep(0.1)
-
-
-    count, _ = FootballTeams.objects.filter(season_id = season_id).delete()
-
-    for team in data:
+def save_all_teams(season_id = 8777,save_img = False, update = True):
+    try:
+        setting = AdminSetting.objects.first()
         
-        match = FootballTeams(
-                id = team["id"],
-name = team["name"],
-cleanName = team["cleanName"],
-english_name = team["english_name"],
- shortHand = team["shortHand"],
- country = team["country"],
- founded = team["founded"],
- image = team["image"].split("/")[-1],
- season = team["season"],
- table_position = team["table_position"],
- performance_rank = team["performance_rank"],
- risk = team["risk"],
- season_format = team["season_format"],
- competition_id = team["competition_id"],
- full_name = team["full_name"],
- season_id = season_id,
- stats_seasonMatchesPlayed_away = team["stats_seasonMatchesPlayed_away"],
- stats_seasonWinsNum_away = team["stats_seasonWinsNum_away"],
- stats_seasonFTS_away = team["stats_seasonFTS_away"],
- stats_seasonDrawsNum_home = team["stats_seasonDrawsNum_home"],
- stats_losePercentage_overall = team["stats_losePercentage_overall"],
- stats_losePercentage_away = team["stats_losePercentage_away"],
- stats_leaguePosition_away = team["stats_leaguePosition_away"],
- stats_prediction_risk = team["stats_prediction_risk"],
- stats_leaguePosition_home = team["stats_leaguePosition_home"],
- stats_seasonConcededNum_overall = team["stats_seasonConcededNum_overall"],
- stats_seasonFTS_home = team["stats_seasonFTS_home"],
- stats_seasonFTS_overall = team["stats_seasonFTS_overall"],
- stats_seasonLossesNum_overall = team["stats_seasonLossesNum_overall"],
- stats_seasonScoredNum_away = team["stats_seasonScoredNum_away"],
- stats_seasonMatchesPlayed_overall = team["stats_seasonMatchesPlayed_overall"],
- stats_seasonWinsNum_home = team["stats_seasonWinsNum_home"],
- stats_seasonGoalDifference_overall = team["stats_seasonGoalDifference_overall"],
- stats_name_th  = team["stats_name_th"],
- stats_leaguePosition_overall = team["stats_leaguePosition_overall"],
- stats_suspended_matches = team["stats_suspended_matches"],
- stats_drawPercentage_overall = team["stats_drawPercentage_overall"],
- stats_seasonGoalDifference_away = team["stats_seasonGoalDifference_away"],
- stats_seasonConcededNum_away = team["stats_seasonConcededNum_away"],
- stats_seasonGoalsTotal_away = team["stats_seasonGoalsTotal_away"],
- stats_seasonGoalsTotal_home = team["stats_seasonGoalsTotal_home"],
- stats_seasonWinsNum_overall = team["stats_seasonWinsNum_overall"],
- stats_seasonLossesNum_home = team["stats_seasonLossesNum_home"],
- stats_seasonDrawsNum_away = team["stats_seasonDrawsNum_away"],
- stats_losePercentage_home = team["stats_losePercentage_home"],
- stats_seasonGoalsTotal_overall = team["stats_seasonGoalsTotal_overall"],
- stats_winPercentage_home = team["stats_winPercentage_home"],
- stats_drawPercentage_away = team["stats_drawPercentage_away"],
- stats_winPercentage_overall = team["stats_winPercentage_overall"],
- stats_drawPercentage_home = team["stats_drawPercentage_home"],
- stats_seasonScoredNum_overall = team["stats_seasonScoredNum_overall"],
- stats_seasonLossesNum_away = team["stats_seasonLossesNum_away"],
- stats_seasonDrawsNum_overall = team["stats_seasonDrawsNum_overall"],
- stats_seasonGoalDifference_home = team["stats_seasonGoalDifference_home"],
- stats_seasonMatchesPlayed_home = team["stats_seasonMatchesPlayed_home"],
- stats_winPercentage_away = team["stats_winPercentage_away"],
- stats_seasonScoredNum_home = team["stats_seasonScoredNum_home"],
- stats_seasonConcededNum_home = team["stats_seasonConcededNum_home"])
+        league_list, api, key = setting.league_list, setting.web_api, setting.api_key
 
-        match.save()
+        file_path_img = os.path.join(settings.BASE_DIR, 
+        'footballresults', 'static', 'images','teams')
+        response = requests.get(f"{api}league-teams?key={key}&season_id={season_id}&include=stats")
+
+        data = response.json()
+        if data['success']:
+            data = data["data"]
+        else:
+            data = []
+            send_line_notification("can not get data from league-teams api")
+
+
+        data = list(map(lambda x: league_team_filter(x, season_id),data))
+
+
+        if save_img:
+            for league in data:
+                save_image_from_url(league["image"], 
+                                                        file_path_img)
+
+
+        timestamp_now = int(time.time())
+        try:
+            latest_entry = FootballTeams.objects.filter(season_id = season_id).latest('date_update').date_update
+        except:
+            latest_entry = 0
+
+        if abs(latest_entry - timestamp_now) > int(setting.time_time_update*60) or update:
+
+            count, _ = FootballTeams.objects.filter(season_id = season_id).delete()
+
+            for team in data:
+                
+                match = FootballTeams(
+                        id = team["id"],
+        name = team["name"],
+        cleanName = team["cleanName"],
+        english_name = team["english_name"],
+        shortHand = team["shortHand"],
+        country = team["country"],
+        founded = team["founded"],
+        image = team["image"].split("/")[-1],
+        season = team["season"],
+        table_position = team["table_position"],
+        performance_rank = team["performance_rank"],
+        risk = team["risk"],
+        season_format = team["season_format"],
+        competition_id = team["competition_id"],
+        full_name = team["full_name"],
+        season_id = season_id,
+        stats_seasonMatchesPlayed_away = team["stats_seasonMatchesPlayed_away"],
+        stats_seasonWinsNum_away = team["stats_seasonWinsNum_away"],
+        stats_seasonFTS_away = team["stats_seasonFTS_away"],
+        stats_seasonDrawsNum_home = team["stats_seasonDrawsNum_home"],
+        stats_losePercentage_overall = team["stats_losePercentage_overall"],
+        stats_losePercentage_away = team["stats_losePercentage_away"],
+        stats_leaguePosition_away = team["stats_leaguePosition_away"],
+        stats_prediction_risk = team["stats_prediction_risk"],
+        stats_leaguePosition_home = team["stats_leaguePosition_home"],
+        stats_seasonConcededNum_overall = team["stats_seasonConcededNum_overall"],
+        stats_seasonFTS_home = team["stats_seasonFTS_home"],
+        stats_seasonFTS_overall = team["stats_seasonFTS_overall"],
+        stats_seasonLossesNum_overall = team["stats_seasonLossesNum_overall"],
+        stats_seasonScoredNum_away = team["stats_seasonScoredNum_away"],
+        stats_seasonMatchesPlayed_overall = team["stats_seasonMatchesPlayed_overall"],
+        stats_seasonWinsNum_home = team["stats_seasonWinsNum_home"],
+        stats_seasonGoalDifference_overall = team["stats_seasonGoalDifference_overall"],
+        stats_name_th  = team["stats_name_th"],
+        stats_leaguePosition_overall = team["stats_leaguePosition_overall"],
+        stats_suspended_matches = team["stats_suspended_matches"],
+        stats_drawPercentage_overall = team["stats_drawPercentage_overall"],
+        stats_seasonGoalDifference_away = team["stats_seasonGoalDifference_away"],
+        stats_seasonConcededNum_away = team["stats_seasonConcededNum_away"],
+        stats_seasonGoalsTotal_away = team["stats_seasonGoalsTotal_away"],
+        stats_seasonGoalsTotal_home = team["stats_seasonGoalsTotal_home"],
+        stats_seasonWinsNum_overall = team["stats_seasonWinsNum_overall"],
+        stats_seasonLossesNum_home = team["stats_seasonLossesNum_home"],
+        stats_seasonDrawsNum_away = team["stats_seasonDrawsNum_away"],
+        stats_losePercentage_home = team["stats_losePercentage_home"],
+        stats_seasonGoalsTotal_overall = team["stats_seasonGoalsTotal_overall"],
+        stats_winPercentage_home = team["stats_winPercentage_home"],
+        stats_drawPercentage_away = team["stats_drawPercentage_away"],
+        stats_winPercentage_overall = team["stats_winPercentage_overall"],
+        stats_drawPercentage_home = team["stats_drawPercentage_home"],
+        stats_seasonScoredNum_overall = team["stats_seasonScoredNum_overall"],
+        stats_seasonLossesNum_away = team["stats_seasonLossesNum_away"],
+        stats_seasonDrawsNum_overall = team["stats_seasonDrawsNum_overall"],
+        stats_seasonGoalDifference_home = team["stats_seasonGoalDifference_home"],
+        stats_seasonMatchesPlayed_home = team["stats_seasonMatchesPlayed_home"],
+        stats_winPercentage_away = team["stats_winPercentage_away"],
+        stats_seasonScoredNum_home = team["stats_seasonScoredNum_home"],
+        stats_seasonConcededNum_home = team["stats_seasonConcededNum_home"],
+        date_update = timestamp_now)
+
+                match.save()
+    except:
+        send_line_notification("can not get data from league-teams api")
 

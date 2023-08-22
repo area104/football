@@ -46,7 +46,15 @@ class FootballMatch(models.Model):
     away_name = models.CharField(max_length=100)
     home_image = models.CharField(max_length=100)
     away_image = models.CharField(max_length=100)
+    home_image_url = models.CharField(max_length=2000)
+    away_image_url = models.CharField(max_length=2000)
     date_update = models.IntegerField()
+    home_ppg = models.CharField(max_length=100)
+    away_ppg = models.CharField(max_length=100)
+    pre_match_home_ppg = models.CharField(max_length=100)
+    pre_match_away_ppg = models.CharField(max_length=100)
+    pre_match_teamA_overall_ppg = models.CharField(max_length=100)
+    pre_match_teamB_overall_ppg = models.CharField(max_length=100)
 
     class Meta:
         db_table = 'football_match'
@@ -59,6 +67,7 @@ class FootballLeague(models.Model):
     _id = models.ObjectIdField()
     name = models.CharField(max_length=200)
     image = models.CharField(max_length=200)
+    image_url = models.CharField(max_length=2000)
     country = models.CharField(max_length=200)
     league_id_last = models.IntegerField()
     league_id_prev = models.IntegerField()
@@ -78,8 +87,9 @@ class FootballTeams(models.Model):
     english_name = models.CharField(max_length=200)
     shortHand = models.CharField(max_length=200)
     country = models.CharField(max_length=200)
-    founded = models.IntegerField()
+    founded = models.CharField(max_length=200)
     image = models.CharField(max_length=200)
+    image_url = models.CharField(max_length=2000)
     season = models.CharField(max_length=200)
     table_position = models.IntegerField()
     performance_rank = models.IntegerField()
@@ -130,6 +140,7 @@ class FootballTeams(models.Model):
     stats_winPercentage_away = models.IntegerField()
     stats_seasonScoredNum_home = models.IntegerField()
     stats_seasonConcededNum_home= models.IntegerField()
+    date_update = models.IntegerField()
 
     class Meta:
         db_table = 'football_teams'
@@ -137,17 +148,4 @@ class FootballTeams(models.Model):
     def __str__(self):
         return f"self.name vs self.league_id"
 
-class FootballTeamStat(models.Model):
-    _id = models.ObjectIdField()
-    name = models.CharField(max_length=200)
-    # league_id = models.CharField(max_length=200)
-    # league_year = models.CharField(max_length=200)
-    # image = models.CharField(max_length=200)
-    # country = models.CharField(max_length=200)
-
-    class Meta:
-        db_table = 'football_teams_stat'
-
-    def __str__(self):
-        return f"self.name vs self.league_id"
 

@@ -75,16 +75,24 @@
                   <thead class="table">
                     <tr><td><br/></td></tr>
                     <tr class="py-3 my-3">
-                        <th colspan="5">วันที่ {{date.0.date_unix_thai}}</th>
+                        <th colspan="11">วันที่ {{date.0.date_unix_thai}}</th>
                     </tr>
                 </thead>
                 
                       <thead>
                           <tr>
                               <th>เวลา</th>
+                              
+                              <th>ทีมเจ้าบ้าน  pre_match _overall_ppg</th>
+                              <th>ทีมเจ้าบ้าน pre_match _ppg</th>
+                              <th>ทีมเจ้าบ้าน ppg</th>
                               <th>ทีมเจ้าบ้าน</th>
                               <th>ผลบอล</th>
                               <th>ทีมเยือน</th>
+                              <th>ทีมเยือน ppg</th>
+                              <th>ทีมเยือน pre_match _ppg</th>
+                              <th>ทีมเยือน pre_match _overall_ppg</th>
+                              
                               <th>Status</th>
                           </tr>
                       </thead>
@@ -92,14 +100,28 @@
                           {% for league in date %}
                               <tr>
                                   <td>{{league.time_unix}}</td>
-                                  <td>{{league.home_name}}</td>
+                                  <td>{{league.pre_match_teamA_overall_ppg}}</td>
+                                <td>{{league.pre_match_home_ppg}}</td>
+                                <td>{{league.home_ppg}}</td>
+                                  <td ><div class="col d-flex justify-content-end">{{league.home_name}} 
+                                    <img src = "{{ league.home_image_url }}"  width="25px"  height="25px"/></div>
+                                    </td>
+                                    
                                   <td class="text-center">
                                     <a href="/matchdetail/{{league_id}}/{{league.match_id}}" class="text-decoration-none {% if league.home_goal_count > league.away_goal_count %}text-success bg-light p-2 rounded{% elif league.home_goal_count < league.away_goal_count %}text-danger bg-light p-2 rounded{% else %}text-dark{% endif %}" style="font-weight: bold; font-size: 1.2em;">
                                         {{league.home_goal_count}} - {{league.away_goal_count}}
                                     </a>
                                 </td>
                                 
-                                  <td>{{league.away_name}}</td>
+                                
+                                
+                                
+                                
+                                  <td> <img src = "{{ league.away_image_url }}"  width="25px"  height="25px"/>
+                                     {{league.away_name}}</td>
+                                     <td>{{league.away_ppg}}</td>
+                                <td>{{league.pre_match_away_ppg}}</td>
+                                <td>{{league.pre_match_teamB_overall_ppg}}</td>
                                   <td>
                                       {% if league.status == 'complete' %}
                                           <span class="badge bg-success">{{league.status}}</span>

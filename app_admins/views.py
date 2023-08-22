@@ -13,7 +13,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
-
+from footballresults.models import FootballMatch, FootballLeague, FootballTeams
 def delete_user(request, user_id):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -96,5 +96,17 @@ def users(request):
     return render(request, 'users.html', {'users': users})
 
 def datasetting(request):
+    data_league = FootballLeague.objects.values(
+"name",
+"country",
+"league_id_last",
+"league_id_prev","date_update").distinct()
+    data_match = FootballMatch.objects.values("league_id",
+"season","date_update").distinct()
+
+    data_team = FootballTeams.objects.values("season_id",
+    "season","date_update").distinct()
     if not request.user.is_authenticated:
         return redirect('login')
+    return render(request, 'datasetting.html',{"data_league":data_league,
+    "data_match":data_match, "data_team":data_team})

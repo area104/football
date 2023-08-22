@@ -19,4 +19,4 @@ class AdminSetting(models.Model):
         db_table = 'db_admin_setting'
 
     def __str__(self):
-        return self.username
+        return self.api_key
