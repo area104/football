@@ -70,7 +70,7 @@ def save_all_teams(season_id = 8777,save_img = False, update = True):
 
         file_path_img = os.path.join(settings.BASE_DIR, 
         'footballresults', 'static', 'images','teams')
-        response = requests.get(f"{api}league-teams?key={key}&season_id={season_id}&include=stats")
+        response = requests.get(os.path.join(api,f"league-teams?key={key}&season_id={season_id}&include=stats").replace("\\","/"))
 
         data = response.json()
         if data['success']:

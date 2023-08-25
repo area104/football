@@ -1,12 +1,13 @@
-{% extends 'base.html' %}
+{% extends 'baseadmin.html' %}
+{% load static %}
 {% block content %}
-
-<table border="1">
+<div class="container">
+    <h3 class="p-3">รายชื่อ Admin</h3>
+<table class="table table-hover">
     <thead>
         <tr>
             <th>ID</th>
             <th>Username</th>
-            <th>Email</th>
             <th>Date Joined</th>
             <th>Actions</th>
         </tr>
@@ -16,17 +17,23 @@
         <tr>
             <td>{{ user.id }}</td>
             <td>{{ user.username }}</td>
-            <td>{{ user.email }}</td>
             <td>{{ user.date_joined }}</td>
             <td>
                 <form action="{% url 'delete_user' user.id %}" method="post">
                     {% csrf_token %}
-                    <input type="submit" value="Delete">
+                    <input onclick="return confirmDelete();" type="submit" class="btn btn-danger" value="Delete">
                 </form>
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+
+</div>
+<script>
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this user?");
+    }
+    </script>
 
 {% endblock %}

@@ -6,28 +6,22 @@ from .modules.get_all_matchs import *
 from .modules.get_match_detail import *
 from .modules.get_all_teams import *
 from .modules.linenotify import *
+from .modules.save_all_data import *
 
 
 
-# ok
 def index(request):
-    # save_all_leagues(update = True, save_img = False) #1
+    save_all_data(update = False, data = "league")
     all_leagues = get_all_leagues()
-    # all_leagues_id = [[x['league_id_last'],x['league_id_prev']] for x in all_leagues]
-    # all_leagues_id = sum(all_leagues_id, [])
-    # for id in all_leagues_id:
-    #     print("ok",id)
-    #     save_all_matchs(id, update = True) #3
-    #     save_all_teams(season_id = id,save_img = False , update = True) #2
-
     return render(request,"index.html",{"all_leagues": all_leagues})
 
 
 def tablestoday(request, date):
+    save_all_data(update = False, data = "match" ,id = 0)
     if date == "":
         date = datetime.datetime.today().date().strftime('%Y-%m-%d')
     league_id = 0
-    data, league, data2 = get_all_matchs(league_id=league_id, date_unix_gte = date,
+    data, league, data_league = get_all_matchs(league_id=league_id, date_unix_gte = date,
                                     date_unix_lte = date)
     date = datetime.datetime.strptime(date, '%Y-%m-%d').date()
     
@@ -43,14 +37,15 @@ def tablestoday(request, date):
 
     return render(request,"tablestoday.html",{"date":date,"date_bf":date_bf,
     "date_af":date_af,"date_th":date_th,"date_bf_th":date_bf_th,
-    "date_af_th":date_af_th,"league1":league, "data": data2,"league_id":league_id})
+    "date_af_th":date_af_th,"league1":league, "data": data_league,"league_id":league_id})
 
 
 def tablesleagues(request, league_id):
+    save_all_data(update = False, data = "match",id = league_id)
     date_begin = request.GET.get('begin_date', '')
     date_end = request.GET.get('end_date', '')
     
-    data, league,data2 = get_all_matchs(league_id, date_unix_gte = date_begin,
+    data, league,_ = get_all_matchs(league_id, date_unix_gte = date_begin,
                                     date_unix_lte = date_end)
 
     
@@ -59,12 +54,14 @@ def tablesleagues(request, league_id):
 
 
 def about(request):
+    pass
     return render(request,"about.html")
 
 
 
 
 def matchdetail(request, league_id,match_id):
+    save_all_data(update = False, data = "team",id = league_id)
     data = get_matchdetail(league_id,match_id)
 
     return render(request,"matchdetail.html",data)

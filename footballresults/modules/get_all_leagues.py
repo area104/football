@@ -64,9 +64,9 @@ def save_all_leagues(update = False, save_img = False):
             latest_entry = FootballLeague.objects.latest('date_update').date_update
         except:
             latest_entry = 0
-
+        
         if abs(latest_entry - timestamp_now) > int(setting.time_league_update*60) or update:
-            response = requests.get(f"{api}league-list?key={key}")
+            response = requests.get(os.path.join(api, f"league-list?key={key}").replace("\\","/"))
             data = response.json()
             
             if data['success']:

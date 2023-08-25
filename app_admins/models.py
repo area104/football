@@ -11,6 +11,7 @@ class AdminSetting(models.Model):
     time_time_update = models.IntegerField()
     time_matches_update = models.IntegerField()
     league_list = models.TextField()
+    user_get_api = models.IntegerField()
 
 
 

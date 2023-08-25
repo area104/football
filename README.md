@@ -20,7 +20,7 @@ db.createUser({
   roles: [{ role: "readWrite", db: "footballdb" }]
 })
 
-
+pip freeze > requirements.txt 
 pip install djongo pymongo pytz
 
 python manage.py makemigrations footballresults

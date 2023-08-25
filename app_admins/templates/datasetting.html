@@ -1,62 +1,117 @@
-<table>
+{% extends 'baseadmin.html' %}
+{% block title %}
+Setting
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h3>ข้อมูลใน ฐานข้อมูล</h3>
+<h2 class="p-3">League DB</h2>
+<table class="table">
     <thead>
         <tr>
-            <th>league_id</th>
-            <th>season</th>
-            <th>Date update</th>
+            <th>League Name</th>
+            <th>Country</th>
+            <th>Season</th>
+            <th>Season ID</th>
+            <th>Date Update</th>
+            <th></th>
+            
         </tr>
     </thead>
     <tbody>
-        {% for match in data_match %}
+        {% for item in data_league %}
             <tr>
-                <td>{{ match.league_id }}</td>
-                <td>{{ match.season }}</td>
-                <td>{{ match.date_update }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.country }}</td>
+                <td>{{ item.season }}</td>
+                <td>{{ item.season_id }}</td>
+                <td>{{ item.date_update }}</td>
+                <td>
+                    <form action="{% url 'delete_league' item.season_id %}" method="post">
+                        {% csrf_token %}
+                        <input onclick="return confirmDelete();" type="submit" class="btn btn-danger" value="Delete">
+                    </form>
+                </td>
+                
+                
             </tr>
         {% endfor %}
     </tbody>
 </table>
 
 
-<table>
+<h2 class="p-3">Teams DB</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>League Name</th>
+            <th>Country</th>
+            <th>Season</th>
+            <th>Season ID</th>
+            <th>Date Update</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in data_team %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.country }}</td>
+                <td>{{ item.season }}</td>
+                <td>{{ item.season_id }}</td>
+                <td>{{ item.date_update }}</td>
+                <td>
+                    <form action="{% url 'delete_team' item.season_id %}" method="post">
+                        {% csrf_token %}
+                        <input onclick="return confirmDelete();" type="submit" class="btn btn-danger" value="Delete">
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+<h2 class="p-3">Matches DB</h2>
+
+<table class="table">
     <thead>
         <tr>
             <th>Name</th>
             <th>Country</th>
-            <th>Last League ID</th>
-            <th>Previous League ID</th>
-            <th>Date update</th>
+            <th>Season</th>
+            <th>Season ID</th>
+            <th>Date Update</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        {% for league in data_league %}
+        {% for item in data_match %}
             <tr>
-                <td>{{ league.name }}</td>
-                <td>{{ league.country }}</td>
-                <td>{{ league.league_id_last }}</td>
-                <td>{{ league.league_id_prev }}</td>
-                <td>{{ league.date_update }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.country }}</td>
+                <td>{{ item.season }}</td>
+                <td>{{ item.season_id }}</td>
+                <td>{{ item.date_update }}</td>
+                <td>
+                    <form action="{% url 'delete_match' item.season_id %}" method="post">
+                        {% csrf_token %}
+                        <input onclick="return confirmDelete();" type="submit" class="btn btn-danger" value="Delete">
+                    </form>
+                </td>
             </tr>
         {% endfor %}
     </tbody>
 </table>
 
+</div>
 
-<table>
-    <thead>
-        <tr>
-            <th>season_id</th>
-            <th>season</th>
-            <th>Date update</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for team in data_team %}
-            <tr>
-                <td>{{ team.season_id }}</td>
-                <td>{{ team.season }}</td>
-                <td>{{ team.date_update }}</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+
+<script>
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this user?");
+    }
+    </script>
+
+{% endblock %}

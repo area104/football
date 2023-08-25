@@ -48,7 +48,7 @@ def league_match(setting, league_id = 7704):
     try:
         league_list, api, key = setting.league_list, setting.web_api, setting.api_key
         league_list = [x.strip().replace("-","").replace("  "," ") for x in league_list.split("\n")]
-        r = requests.get(f"{api}league-matches?key={key}&season_id={league_id}")
+        r = requests.get(os.path.join(api,f"league-matches?key={key}&season_id={league_id}").replace("\\","/"))
         data = r.json()
         
         if data['success']:

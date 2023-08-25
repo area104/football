@@ -17,16 +17,19 @@
 <body style="background-color: #fefefe;">
    <!-- Navbar Section -->
    <nav class="navbar navbar-expand-lg navbar-dark" style="padding: 1rem 3rem; background-color: #004445;">
-    <div class="container d-flex justify-content-between mx-1">
-      <a class="navbar-brand fs-2 text-light" href="/" style="font-weight: bold;">ผลบอลออนไลน์</a>
+    <div class="container d-flex justify-content-end mx-1">
+      <!-- <a class="navbar-brand fs-2 text-light" href="/" style="font-weight: bold;">ผลบอลออนไลน์</a> -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="border-color: #ffffff;">
         <!-- <span class="navbar-toggler-icon"></span> -->
         <i class="fas fa-bars menu-icon text-light" aria-hidden="true"></i>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item"><a class="nav-link text-light" href="/" style="font-weight: bold; transition: color 0.2s ease-in-out;">หน้าหลัก</a></li>
-          <li class="nav-item"><a class="nav-link text-light" href="/tablestoday" style="font-weight: bold; transition: color 0.2s ease-in-out;">ผลบอลวันนี้</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="{% url  'users' %}" style="font-weight: bold; transition: color 0.2s ease-in-out;">รายชื่อ Admins</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="{% url  'register' %}" style="font-weight: bold; transition: color 0.2s ease-in-out;">เพิ่ม Admin</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="{% url  'data' %}" style="font-weight: bold; transition: color 0.2s ease-in-out;">จัดการข้อมูล</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="{% url  'setting' %}" style="font-weight: bold; transition: color 0.2s ease-in-out;">ตั้งค่า</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="{% url  'logout' %}" style="font-weight: bold; transition: color 0.2s ease-in-out;">ออกจากระบบ</a></li>
         </ul>
       </div>
     </div>

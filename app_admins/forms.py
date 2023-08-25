@@ -19,4 +19,5 @@ class AdminSettingsForm(forms.Form):
     duration_for_get_leagues_data = forms.IntegerField(label='Duration for Get Leagues Data (minutes)', widget=forms.NumberInput(attrs={'class': 'form-control'}))
     duration_for_get_teams_data = forms.IntegerField(label='Duration for Get Teams Data (minutes)', widget=forms.NumberInput(attrs={'class': 'form-control'}))
     duration_for_get_matches_data = forms.IntegerField(label='Duration for Get Matches Data (minutes)', widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    user_get_api = forms.IntegerField(label='User get API', widget=forms.NumberInput(attrs={'class': 'form-control'}))
 
