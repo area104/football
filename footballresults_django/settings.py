@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-+&vt7a)96zc(t(2^xb@%b5xas%@(fu_-!-cq&$qkr)!h7d_)u6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'footballresults_django.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'footballdb3',
+        'NAME': 'footballdb',
         'ENFORCE_SCHEMA': True,
         'CLIENT': {
             'host': 'localhost',       # Change 'your_host' to 'localhost'
@@ -131,12 +131,15 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
+import os
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+#STATIC_ROOT = BASE_DIR/ '/static'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'static_root'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

@@ -1,0 +1,29 @@
+ England - Championship
+ England - Premier League
+ England - FA Cup
+ England - Professional Development League
+ England - Premier League 2 Division One U23
+ 
+ France - Ligue 1
+ Germany - Bundesliga
+ Germany - DFB Pokal
+ 
+  Italy - Serie A
+  Italy - Supercoppa Italiana
+  Italy - Coppa Italia
+  Italy - Primavera Cup
+  
+  Netherlands - Netherlands Playoffs 1 2
+  Netherlands - Eredivisie
+  Netherlands - KNVB Cup
+  Netherlands - Eerste Divisie
+    
+    
+ Spain - La Liga
+
+
+https://api.football-data-api.com/
+ccbef816e3f4aa026b0aa0c87418f86f086b002b267bfec785d9ec33370fd1d3
+Scj7cijddqAVxrF6uQqxKxDyldkDxrKhKui8mpoObrW
+England - Championship
+England - Premier League

@@ -12,7 +12,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import redirect
-from django.contrib.auth.models import User
 from footballresults.models import FootballMatch, FootballLeague, FootballTeams
 from footballresults.modules.save_all_data import *
 import pandas as pd
@@ -58,6 +57,7 @@ class CustomLoginView(LoginView):
 
 # Create your views here.
 def register(request: HttpRequest):
+    
     if request.method == "POST":
         try:
             form = RegisterForm(request.POST)
@@ -69,8 +69,9 @@ def register(request: HttpRequest):
         except:
             return redirect('users')
     else:
-        if not request.user.is_authenticated:
+        if User.objects.count() > 0 and not request.user.is_authenticated :
             return redirect('login')
+
         form = RegisterForm()
     
     return render(request, "app_users/register.html",
